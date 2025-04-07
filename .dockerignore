@@ -1,0 +1,12 @@
+.git
+node_modules
+vendor
+.env
+*.log
+tests
+k8s/*
+*.zip
+*.tar
+*.tar.gz
+*.tar.xz
+*.tar.bz2
