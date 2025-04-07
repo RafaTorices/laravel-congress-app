@@ -1,0 +1,68 @@
+name: Quality Code
+# This workflow will run the quality code checks for the application
+
+on:
+  push:
+    # This workflow will run on push events to the develop branch
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  Quality:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [8.2]
+
+    steps:
+      - name: Clone repository the application
+        # This step will clone the repository to the runner
+        uses: actions/checkout@v4
+
+      - name: Cache composer dependencies
+        # This step will cache the composer dependencies to speed up the workflow
+        # It uses the hash of the composer.lock file to create a unique key for the cache
+        # The cache will be restored if the key matches
+        # If the key does not match, the cache will be created with the new key
+        # The cache will be stored in the vendor directory
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: PHP Setup
+        # This step will set up the PHP environment for the workflow
+        # It uses the shivammathur/setup-php action to install PHP and its extensions
+        # The shivammathur/setup-php is a popular action for setting up PHP environments in GitHub Actions
+        # It also installs composer, phpstan, and laravel-pint
+        # The PHP version is set to the matrix value
+        # The extensions are set to mbstring, bcmath, pdo, and pdo_mysql
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, bcmath, pdo, pdo_mysql
+
+      - name: Install dependencies
+        # This step will install the composer dependencies
+        # It uses the --prefer-dist option to install the dependencies from dist
+        # It also uses the --no-progress option to disable the progress bar
+        # This step will also install the dependencies in the vendor directory
+        # The vendor directory is cached in the previous step
+        run: composer install --prefer-dist --no-progress
+
+      - name: Analyze code with PHPStan
+        # This step will run the PHPStan analysis
+        # It uses the --level option to set the analysis level to 5
+        # It also uses the --memory-limit option to set the memory limit to 1G
+        # The analysis will be run on the app directory
+        # The app directory is the main directory of the Laravel application
+        run: vendor/bin/phpstan analyse --level=5 --memory-limit=1G app/
+
+      - name: 6. Format code with Laravel Pint
+        # This step will run the Laravel Pint code formatter
+        # It uses the --test option to run the tests
+        run: vendor/bin/pint --test

@@ -1,0 +1,124 @@
+name: Tests App
+
+on:
+  push:
+    # This workflow will run on push events to the develop branch
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [8.2]
+
+    # Environment variables for the MySQL service
+    # These variables will be used to connect to the MySQL service
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: laravel-test
+      DB_USERNAME: laravel
+      DB_PASSWORD: laravel
+      MYSQL_ROOT_PASSWORD: laravel
+      MYSQL_DATABASE: laravel-test
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+
+    services:
+      # MySQL service for testing
+      # This service will be used to run the tests
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+        ports:
+          - 3306:3306
+        # MySQL service health check
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Clone repository the application
+        # This step will clone the repository to the runner
+        uses: actions/checkout@v4
+
+      - name: Cache composer dependencies
+        # This step will cache the composer dependencies to speed up the workflow
+        # It uses the hash of the composer.lock file to create a unique key for the cache
+        # The cache will be restored if the key matches
+        # If the key does not match, the cache will be created with the new key
+        # The cache will be stored in the vendor directory
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: PHP Setup
+        # This step will set up the PHP environment for the workflow
+        # It uses the shivammathur/setup-php action to install PHP and its extensions
+        # The shivammathur/setup-php is a popular action for setting up PHP environments in GitHub Actions
+        # It also installs composer, phpstan, and laravel-pint
+        # The PHP version is set to the matrix value
+        # The extensions are set to mbstring, bcmath, pdo, and pdo_mysql
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, bcmath, pdo, pdo_mysql
+
+      - name: Install Laravel PHP dependencies
+        # This step will install the composer dependencies
+        # It uses the --prefer-dist option to install the dependencies from dist
+        # It also uses the --no-progress option to disable the progress bar
+        # This step will also install the dependencies in the vendor directory
+        # The vendor directory is cached in the previous step
+        run: composer install --prefer-dist --no-progress
+
+      - name: Environment Laravel setup
+        # This step will set up the environment for the Laravel application
+        # It copies the .env.example file to .env
+        # It also generates the application key
+        # It sets the permissions for the storage and bootstrap/cache directories
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          chmod -R 777 storage bootstrap/cache
+
+      - name: Wait for MySQL to be ready
+        # This step will wait for the MySQL service to be ready
+        # It uses the mysql command to check if the MySQL service is running
+        # It will keep checking every 5 seconds until the MySQL service is ready
+        # The mysql command will return 0 if the MySQL service is running
+        # If the MySQL service is not running, it will return 1
+        run: |
+          until mysql -h ${{ env.DB_HOST }} -u ${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }} -e "SELECT 1"; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 5
+            done
+      - name: Configure database
+        # This step will configure the database for the Laravel application if the previous step is successful
+        # It uses the mysql service to run the tests
+        # It sets the database connection to mysql
+        # Run migrations and seed the database
+        # It uses the --force option to run the migrations in production
+        # It also clears the configuration cache
+        run: |
+          php artisan config:clear
+          php artisan migrate --seed --force
+
+      - name: Run tests with PHPUnit
+        # This step will run the PHPUnit tests
+        # It uses the --testdox option to generate a test report
+        # It also uses the --colors option to enable colored output
+        # The tests will be run in the tests directory
+        # The tests directory is the main directory of the Laravel application
+        #TODO: add json report to connect to the others applications and monitoring
+        run: vendor/bin/phpunit --testdox
