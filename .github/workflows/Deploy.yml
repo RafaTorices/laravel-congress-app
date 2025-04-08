@@ -20,13 +20,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set lower-case repo name
-        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-        
+      
+      - name: Set lowercase owner name
+        run: echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+  
       - name: Build Docker image
         run: |
-            docker build -t ghcr.io/${REPO_LC}/laravel-congress-app:latest .
-        
+            docker build -t ghcr.io/${OWNER_LC}/laravel-congress-app:latest .
+  
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${REPO_LC}/laravel-congress-app:latest
+            docker push ghcr.io/${OWNER_LC}/laravel-congress-app:latest
