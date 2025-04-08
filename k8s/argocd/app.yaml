@@ -1,0 +1,21 @@
+# Config file for ArgoCD
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-argocd
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default # Namespace where the application will be deployed
+    server: https://kubernetes.default.svc # Kubernetes API server URL
+  project: default # Project where the application will be deployed
+  source:
+    path: ./k8s/app # Path to the application manifests in the Git repository
+    repoURL: https://github.com/RafaTorices/laravel-congress-app.git # Git repository URL
+    targetRevision: main # Git branch to deploy from the repository (main by default)
+  syncPolicy: # Sync policy for the application
+    automated:
+      prune: false
+      selfHeal: false
