@@ -6,6 +6,8 @@ FROM php:8.4-apache
 WORKDIR /var/www/html
 # Copy the Laravel application files to the container
 COPY . /var/www/html
+# Copy the .env file
+COPY .env.example /var/www/html/.env
 # Copy the Apache configuration file
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 # Install dependencies
