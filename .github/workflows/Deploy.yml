@@ -1,50 +1,30 @@
-name: Deploy to Production
-# This workflow will deploy the application to the production server
+name: Deploy to GHCR
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  Deploy:
+  Build-and-push:
+    name: Build & Push Docker Image to GHCR
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repository the application
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
         with:
-          node-version: "18"
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install NPM dependencies
-        run: npm install
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/${{ github.repository_id }}/laravel-congress-app:latest .
 
-      - name: Compile assets
-        run: npm run build
-
-      - name: Configure PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: mbstring, bcmath, pdo, pdo_mysql
-
-      - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Deploy to production
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/your-app
-            git pull origin main
-            composer install --no-dev --optimize-autoloader
-            php artisan migrate --force
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            sudo systemctl restart php8.2-fpm
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_id }}/laravel-congress-app:latest
