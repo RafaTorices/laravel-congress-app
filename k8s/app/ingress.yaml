@@ -15,13 +15,3 @@ spec:
                 name: app-service
                 port:
                   name: http
-    - host:
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: app-service
-                port:
-                  name: http
