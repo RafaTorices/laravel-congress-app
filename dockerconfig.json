@@ -1,0 +1,13 @@
+{
+    "kind": "Secret",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "ghcr-secret",
+        "namespace": "default",
+        "creationTimestamp": null
+    },
+    "data": {
+        ".dockerconfigjson": "eyJhdXRocyI6eyJnaGNyLmlvIjp7InVzZXJuYW1lIjoiUmFmYVRvcmljZXMiLCJwYXNzd29yZCI6ImdocF9jUFR6TGh4SEV0SlYzY1JtWWhDVnYzdUg4cW5pSVgxaG8wclUiLCJlbWFpbCI6InRvcmljZXMucmFmYWVsQGdtYWlsLmNvbSIsImF1dGgiOiJVbUZtWVZSdmNtbGpaWE02WjJod1gyTlFWSHBNYUhoSVJYUktWak5qVW0xWmFFTldkak4xU0RoeGJtbEpXREZvYnpCeVZRPT0ifX19"
+    },
+    "type": "kubernetes.io/dockerconfigjson"
+}

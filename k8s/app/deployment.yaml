@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app-pod
+          image: rafacv99/keep-app:latest
+          volumeMounts:
+            - name: app-volume-config
+              mountPath: /var/www/html/.env
+              subPath: .env
+          ports:
+            - name: http-port
+              containerPort: 80
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "300m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+      volumes:
+        - name: app-volume-config
+          configMap:
+            name: app-configmap
+            items:
+              - key: config_laravel
+                path: .env
