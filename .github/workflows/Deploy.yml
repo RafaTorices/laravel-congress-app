@@ -26,4 +26,4 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:lates
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:latest
