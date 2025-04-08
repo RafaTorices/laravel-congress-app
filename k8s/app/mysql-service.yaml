@@ -1,0 +1,33 @@
+# mysql service yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: default
+spec:
+  selector:
+    app: mysql
+  ports:
+    - name: mysql
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+---
+# mysql headless service yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-headless
+  namespace: default
+  labels:
+    app: mysql
+spec:
+  clusterIP: None
+  ports:
+    - name: mysql
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: mysql
