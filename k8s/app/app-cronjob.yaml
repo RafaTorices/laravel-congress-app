@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: app-migrate
+  labels:
+    app: app
+spec:
+  suspend: true
+  schedule: "@yearly"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: app-job-migrate
+              image: toricesrafael/laravel-congress-app:abc1234
+              command: ["php", "artisan", "migrate", "--force"]
