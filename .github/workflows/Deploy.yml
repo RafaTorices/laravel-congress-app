@@ -37,18 +37,13 @@ jobs:
       - name: Update Kubernetes deployment YAML
         run: |
             sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/app-deployment.yaml
-            
-      - name: Update Kubernetes crojob YAML
-        run: |
-            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/app-cronjob.yaml
-  
+    
       - name: Commit and push updated manifest
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git remote set-url origin https://${{ secrets.DOCKERHUB_TOKEN }}@github.com/${{ github.repository }}
           git add k8s/app/app-deployment.yaml
-          git add k8s/app/app-cronjob.yaml
           git commit -m "Update image tag to $IMAGE_TAG"
           git push origin HEAD:main
       

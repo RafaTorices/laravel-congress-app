@@ -14,6 +14,14 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+        - name: app-migrate
+          image: toricesrafael/laravel-congress-app:e2ab79d
+          command: ["php", "artisan", "migrate", "--force"]
+          volumeMounts:
+            - name: app-secret
+              mountPath: /var/www/html/.env
+              subPath: .env
       containers:
         - name: app-pod
           image: toricesrafael/laravel-congress-app:e2ab79d
