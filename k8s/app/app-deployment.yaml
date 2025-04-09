@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: app-migrate
-          image: toricesrafael/laravel-congress-app:44b05c7
+          image: toricesrafael/laravel-congress-app:e5a73ba
           command: ["php", "artisan", "migrate", "--force"]
           volumeMounts:
             - name: app-secret
@@ -24,7 +24,7 @@ spec:
               subPath: .env
       containers:
         - name: app-pod
-          image: toricesrafael/laravel-congress-app:44b05c7
+          image: toricesrafael/laravel-congress-app:e5a73ba
           imagePullPolicy: Always
           volumeMounts:
             - name: app-secret
