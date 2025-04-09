@@ -12,7 +12,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: mysql-job
-          image: toricesrafael/laravel-congress-app:7fee95c
+          image: toricesrafael/laravel-congress-app:9571bbf
           imagePullPolicy: Always
           command: ["php", "artisan", "migrate", "--force"]
           volumeMounts:
