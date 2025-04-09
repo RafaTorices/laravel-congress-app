@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app-pod
-          image: toricesrafael/laravel-congress-app:sha12345
+          image: toricesrafael/laravel-congress-app:latest
           imagePullPolicy: Always
           volumeMounts:
             - name: app-secret
