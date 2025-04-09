@@ -4,6 +4,11 @@ kind: Application
 metadata:
   name: app-argocd
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: toricesrafael/laravel-congress-app
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/image-tag-update-strategy: latest
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
