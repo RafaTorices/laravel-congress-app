@@ -37,8 +37,8 @@ jobs:
   
       - name: Commit and push updated manifest
         run: |
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
+            git config user.name "RAFAEL TORICES"
+            git config user.email "torices.rafael@gmail.com"
             git add k8s/app/app-deployment.yaml
             git commit -m "Update image tag to $IMAGE_TAG"
             git push
