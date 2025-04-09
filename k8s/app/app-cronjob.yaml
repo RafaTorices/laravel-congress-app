@@ -14,5 +14,5 @@ spec:
           restartPolicy: Never
           containers:
             - name: app-job-migrate
-              image: toricesrafael/laravel-congress-app:abc1234
+              image: toricesrafael/laravel-congress-app:e2ab79d
               command: ["php", "artisan", "migrate", "--force"]
