@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      # initContainers:
+      #   - name: app-migrate
+      #     image: toricesrafael/laravel-congress-app:e5a73ba
+      #     command: ["php", "artisan", "migrate", "--force"]
+      #     envFrom:
+      #       - configMapRef:
+      #           name: app-configmap
+      #       - secretRef:
+      #           name: app-secret
+      containers:
+        - name: app-pod
+          image: toricesrafael/laravel-congress-app:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+            - secretRef:
+                name: app-secret
+          ports:
+            - name: http-port
+              containerPort: 80
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "300m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"

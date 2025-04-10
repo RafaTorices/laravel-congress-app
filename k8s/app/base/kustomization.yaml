@@ -1,0 +1,9 @@
+resources:
+  - app/deployment.yaml
+  - app/service.yaml
+  - app/secret.yaml
+  - app/ingress.yaml
+  - app/configmap.yaml
+  - mysql/statefulset.yaml
+  - mysql/service.yaml
+  - mysql/headless.yaml
