@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  APP_NAME: Laravel-Congress-App-Demo-PROD
+  APP_ENV: production
+  DB_HOST: mysql-service
+  DB_PORT: "3306"
+  DB_DATABASE: laravel
