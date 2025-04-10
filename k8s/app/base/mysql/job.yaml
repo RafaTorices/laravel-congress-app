@@ -11,7 +11,11 @@ spec:
     spec:
       containers:
         - name: app-job
+<<<<<<< HEAD
           image: toricesrafael/laravel-congress-app:latest
+=======
+          image: toricesrafael/laravel-congress-app:28a1369
+>>>>>>> dd093345153f6e11f34e5584b8c71e4a5a55ffd0
           command: ["php", "artisan", "migrate", "--force"]
           env:
             - name: DB_CONNECTION
