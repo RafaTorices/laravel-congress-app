@@ -36,7 +36,9 @@ jobs:
       
       - name: Update Kubernetes deployment YAML
         run: |
-            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/app-deployment.yaml
+            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/base/app/deployment.yaml
+            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/config/job_argocd.yaml
+            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/config/job.yaml
     
       - name: Commit and push updated manifest
         run: |
