@@ -3,17 +3,14 @@ kind: Job
 metadata:
   name: app-job-migrate
   namespace: default
-  labels:
-    app: app
-  # generateName: app-laravel-migrate-
-  # annotations:
-  #   argocd.argoproj.io/hook: PostSync
-  #   argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   template:
     spec:
       containers:
-        - name: app-migrate
+        - name: app-job
           image: toricesrafael/laravel-congress-app:8150be1
           command: ["php", "artisan", "migrate", "--force"]
           env:
