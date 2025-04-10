@@ -1,17 +1,23 @@
-name: Tests App
-
+name: Tests App # Run tests with PHPUnit
 on:
   push:
-    # This workflow will run on push events to the develop branch
     branches:
       - develop
+      - main
+      - release/*
+      - hotfix/*
   pull_request:
     branches:
       - develop
+      - main
+      - release/*
+      - hotfix/*
 
 jobs:
-  Tests:
-    runs-on: ubuntu-latest
+  tests:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    # Use a strategy to run the job on multiple PHP versions
+    # This allows the workflow to run on different PHP versions
     strategy:
       matrix:
         php: [8.2]
@@ -69,7 +75,7 @@ jobs:
         # It also installs composer, phpstan, and laravel-pint
         # The PHP version is set to the matrix value
         # The extensions are set to mbstring, bcmath, pdo, and pdo_mysql
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@v2 # Use the shivammathur/setup-php action to set up PHP
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, bcmath, pdo, pdo_mysql
@@ -103,6 +109,7 @@ jobs:
             echo "Waiting for MySQL to be ready..."
             sleep 5
             done
+
       - name: Configure database
         # This step will configure the database for the Laravel application if the previous step is successful
         # It uses the mysql service to run the tests

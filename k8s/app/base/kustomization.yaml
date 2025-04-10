@@ -7,3 +7,4 @@ resources:
   - mysql/statefulset.yaml
   - mysql/service.yaml
   - mysql/headless.yaml
+  - mysql/job.yaml

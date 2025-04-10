@@ -1,22 +1,24 @@
-name: Quality Code
-# This workflow will run the quality code checks for the application
-
+name: Quality Code # This workflow will run the quality code checks for the application
 on:
   push:
-    # This workflow will run on push events to the develop branch
     branches:
       - develop
+      - main
+      - release/*
+      - hotfix/*
   pull_request:
     branches:
       - develop
+      - main
+      - release/*
+      - hotfix/*
 
 jobs:
-  Quality:
+  quality-code:
     runs-on: ubuntu-latest
-    strategy:
+    strategy: # Use a strategy to run the job on multiple PHP versions
       matrix:
         php: [8.2]
-
     steps:
       - name: Clone repository the application
         # This step will clone the repository to the runner

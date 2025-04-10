@@ -6,3 +6,4 @@ kind: Kustomization
 patches:
   - path: patch-deployment.yaml
   - path: patch-configmap.yaml
+  - path: patch-job.yaml

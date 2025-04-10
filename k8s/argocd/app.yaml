@@ -1,4 +1,4 @@
-# Config file for ArgoCD
+# Config file for App in ArgoCD - Production Environment
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -12,10 +12,10 @@ spec:
     server: https://kubernetes.default.svc # Kubernetes API server URL
   project: default # Project where the application will be deployed
   source:
-    path: ./k8s/app/base # Path to the application manifests in the Git repository
+    path: ./k8s/app/overlays/prod # Path to the application manifests in the Git repository - this is the path to the production environment
     repoURL: https://github.com/RafaTorices/laravel-congress-app.git # Git repository URL
-    targetRevision: main # Git branch to deploy from the repository (main by default)
-  syncPolicy:
+    targetRevision: main # Git branch to deploy from the repository
+  syncPolicy: # Sync policy for the application
     automated:
       prune: true
       selfHeal: true

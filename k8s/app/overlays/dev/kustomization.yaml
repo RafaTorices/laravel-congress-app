@@ -8,3 +8,4 @@ patches:
   - path: patch-configmap.yaml
   - path: patch-service.yaml
   - path: patch-ingress.yaml
+  - path: patch-job.yaml
