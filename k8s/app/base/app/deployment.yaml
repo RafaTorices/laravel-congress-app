@@ -16,7 +16,7 @@ spec:
     spec:
       # initContainers:
       #   - name: app-migrate
-      #     image: toricesrafael/laravel-congress-app:df09c46
+      #     image: toricesrafael/laravel-congress-app:8150be1
       #     command: ["php", "artisan", "migrate", "--force"]
       #     envFrom:
       #       - configMapRef:
@@ -25,7 +25,7 @@ spec:
       #           name: app-secret
       containers:
         - name: app-pod
-          image: toricesrafael/laravel-congress-app:df09c46
+          image: toricesrafael/laravel-congress-app:8150be1
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
