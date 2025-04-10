@@ -12,7 +12,7 @@ spec:
     server: https://kubernetes.default.svc # Kubernetes API server URL
   project: default # Project where the application will be deployed
   source:
-    path: ./k8s/app # Path to the application manifests in the Git repository
+    path: ./k8s/app/base # Path to the application manifests in the Git repository
     repoURL: https://github.com/RafaTorices/laravel-congress-app.git # Git repository URL
     targetRevision: main # Git branch to deploy from the repository (main by default)
   syncPolicy:
