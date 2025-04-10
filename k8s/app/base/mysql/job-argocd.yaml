@@ -13,8 +13,8 @@ spec:
   template:
     spec:
       containers:
-        - name: app-migrate
-          image: toricesrafael/laravel-congress-app:c550863
+        - name: app-job
+          image: toricesrafael/laravel-congress-app:latest
           command: ["php", "artisan", "migrate", "--force"]
           env:
             - name: DB_CONNECTION

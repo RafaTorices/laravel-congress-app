@@ -37,7 +37,7 @@ jobs:
       - name: Update Kubernetes deployment YAML
         run: |
             sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/base/app/deployment.yaml
-            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/base/job_argocd.yaml
+            sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/app/base/mysql/job-argocd.yaml
             sed -i "s|\(image: ${{ secrets.DOCKERHUB_USERNAME }}/laravel-congress-app:\).*|\1$IMAGE_TAG|" k8s/config/job.yaml
     
       - name: Commit and push updated manifest
@@ -46,8 +46,8 @@ jobs:
           git config user.email "actions@github.com"
           git remote set-url origin https://${{ secrets.DOCKERHUB_TOKEN }}@github.com/${{ github.repository }}
           git add k8s/app/base/app/deployment.yaml
-          git add k8s/app/base/job_argocd.yaml
+          git add k8s/app/base/mysql/job-argocd.yaml
           git add k8s/config/job.yaml
-          git commit -m "Update image tag to $IMAGE_TAG"
+          git commit -m "Auto update image tag to $IMAGE_TAG"
           git push origin HEAD:main
       
