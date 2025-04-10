@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app-migrate
-          image: toricesrafael/laravel-congress-app:latest
+          image: toricesrafael/laravel-congress-app:6d03af7
           command: ["php", "artisan", "migrate", "--force"]
           env:
             - name: DB_CONNECTION
